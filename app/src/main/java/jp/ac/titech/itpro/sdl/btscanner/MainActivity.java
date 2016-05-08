@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -84,6 +85,20 @@ public class MainActivity extends AppCompatActivity {
         devListView = (ListView) findViewById(R.id.dev_list);
         assert devListView != null;
         devListView.setAdapter(devListAdapter);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        devListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                BluetoothDevice device = devList.get(pos);
+                String message = device.getName() + "のアドレス: " + device.getAddress();
+
+                alertDialogBuilder
+                        .setTitle("詳細")
+                        .setMessage(message)
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        });
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
